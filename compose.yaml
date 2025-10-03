@@ -60,7 +60,7 @@ services:
       - TORRENTING_PORT=${FIREWALL_VPN_INPUT_PORTS} # airvpn forwarded port, pulled from .env
     volumes:
       - ./qbittorrent:/config
-      - /data:/data
+      - /home/mediaserver/data:/data
     depends_on:
       gluetun:
         condition: service_healthy
@@ -96,7 +96,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./nzbget:/config
-      - /data:/data
+      - /home/mediaserver/data:/data
     depends_on:
       gluetun:
         condition: service_healthy
@@ -132,7 +132,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./sonarr:/config
-      - /data:/data
+      - /home/mediaserver/data:/data
     ports:
       - 8989:8989
     networks:
@@ -150,7 +150,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./radarr:/config
-      - /data:/data
+      - /home/mediaserver/data:/data
     ports:
       - 7878:7878
     networks:
@@ -164,7 +164,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./lidarr:/config
-      - /data:/data
+      - /home/mediaserver/data:/data
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -186,43 +186,25 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./bazarr:/config
-      - /data:/data
+      - /home/mediaserver/data:/data
     ports:
       - 6767:6767
     networks:
       servarrnetwork:
         ipv4_address: 172.39.0.6
 
-# Newer additions to this stack feel. Remove the '#' to add the service.
-#
-#  ytdl-sub:
-#    image: ghcr.io/jmbannon/ytdl-sub:latest
-#    container_name: ytdl-sub
-#    environment:
-#      - PUID=${PUID}
-#      - PGID=${PGID}
-#      - TZ=${TZ}
-#      - DOCKER_MODS=linuxserver/mods:universal-cron
-#    volumes:
-#      - ./ytdl-sub:/config
-#      - /data/youtube:/youtube
-#    networks:
-#      servarrnetwork:
-#        ipv4_address: 172.39.0.8
-#    restart: unless-stopped
-#
-#  jellyseerr:
-#    container_name: jellyseerr
-#    image: fallenbagel/jellyseerr:latest
-#    environment:
-#      - PUID=${PUID}
-#      - PGID=${PGID}
-#      - TZ=${TZ}
-#    volumes:
-#      - ./jellyseerr:/app/config
-#    ports:
-#      - 5055:5055
-#    networks:
-#      servarrnetwork:
-#        ipv4_address: 172.39.0.9
-#    restart: unless-stopped
+  jellyseerr:
+    container_name: jellyseerr
+    image: fallenbagel/jellyseerr:latest
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ./jellyseerr:/app/config
+    ports:
+      - 5055:5055
+    networks:
+      servarrnetwork:
+        ipv4_address: 172.39.0.9
+    restart: unless-stopped
