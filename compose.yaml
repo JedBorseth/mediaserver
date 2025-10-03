@@ -217,8 +217,6 @@ services:
     volumes:
       - ./config:/config
       - /home/mediaserver/data:/data
-    devices:
-      - /dev/dri:/dev/dri #Use for Intel QuickSync
     ports:
       - 8096:8096
       - 7359:7359/udp #Service Discovery
